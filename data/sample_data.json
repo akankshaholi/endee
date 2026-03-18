@@ -1,0 +1,302 @@
+[
+  {
+    "id": "1",
+    "name": "Margherita Pizza",
+    "description": "Classic sourdough pizza with tomato sauce, fresh mozzarella, and aromatic basil.",
+    "cuisine": "Italian",
+    "rating": 4.5,
+    "tags": ["pizza", "classic", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "2",
+    "name": "Butter Chicken",
+    "description": "Succulent chicken pieces in a creamy, velvety tomato and butter gravy.",
+    "cuisine": "Indian",
+    "rating": 4.8,
+    "tags": ["spicy", "creamy", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "3",
+    "name": "Paneer Butter Masala",
+    "description": "Cubes of paneer cooked in a rich, buttery tomato sauce with Indian spices.",
+    "cuisine": "Indian",
+    "rating": 4.7,
+    "tags": ["creamy", "spicy", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "4",
+    "name": "Szechuan Noodles",
+    "description": "Spicy stir-fried noodles with crisp vegetables and traditional Szechuan sauce.",
+    "cuisine": "Chinese",
+    "rating": 4.4,
+    "tags": ["spicy", "noodles", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "5",
+    "name": "Greek Salad",
+    "description": "Fresh mixture of olives, feta cheese, cucumber, and sun-ripened tomatoes.",
+    "cuisine": "Continental",
+    "rating": 4.3,
+    "tags": ["healthy", "fresh", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "6",
+    "name": "Chicken Shawarma",
+    "description": "Grilled marinated chicken wrapped in pita with garlic sauce and pickles.",
+    "cuisine": "Middle Eastern",
+    "rating": 4.6,
+    "tags": ["wrap", "street-food", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "7",
+    "name": "Dal Makhani",
+    "description": "Slow-cooked black lentils and kidney beans in a creamy butter sauce.",
+    "cuisine": "Indian",
+    "rating": 4.9,
+    "tags": ["creamy", "healthy", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "8",
+    "name": "Chicken Biryani",
+    "description": "Aromatic basmati rice cooked with chicken, saffron, and exotic spices.",
+    "cuisine": "Indian",
+    "rating": 4.9,
+    "tags": ["spicy", "celebration", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "9",
+    "name": "Veg Burger",
+    "description": "Crispy vegetable patty in a toasted bun with lettuce and cheese.",
+    "cuisine": "American",
+    "rating": 4.2,
+    "tags": ["fast-food", "classic", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "10",
+    "name": "Hummus & Pita",
+    "description": "Smooth chickpea dip served with warm pita bread and olive oil.",
+    "cuisine": "Middle Eastern",
+    "rating": 4.5,
+    "tags": ["healthy", "classic", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1574786198875-49f5d09fe2d2?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "11",
+    "name": "Tandoori Chicken",
+    "description": "Chicken marinated in yogurt and spices, roasted in a traditional clay oven.",
+    "cuisine": "Indian",
+    "rating": 4.7,
+    "tags": ["spicy", "tandoor", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1599487488170-d11ec9c17360?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "12",
+    "name": "Pasta Carbonara",
+    "description": "Creamy pasta dish with parmesan cheese, eggs, and crispy bacon.",
+    "cuisine": "Italian",
+    "rating": 4.6,
+    "tags": ["creamy", "classic", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "13",
+    "name": "Sushi Platter",
+    "description": "Assorted fresh fish and vegetable rolls served with wasabi and ginger.",
+    "cuisine": "Japanese",
+    "rating": 4.8,
+    "tags": ["healthy", "exotic", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "14",
+    "name": "Tofu Stir-Fry",
+    "description": "Crispy tofu chunks stir-fried with seasonal vegetables and soy sauce.",
+    "cuisine": "Chinese",
+    "rating": 4.1,
+    "tags": ["healthy", "vegan", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "15",
+    "name": "Falafel Wrap",
+    "description": "Deep-fried chickpea balls in a pita wrap with salad and tahini.",
+    "cuisine": "Middle Eastern",
+    "rating": 4.4,
+    "tags": ["street-food", "vegetarian", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "16",
+    "name": "Egg Fried Rice",
+    "description": "Stir-fried rice with scrambled eggs, scallions, and soy sauce.",
+    "cuisine": "Chinese",
+    "rating": 4.3,
+    "tags": ["simple", "fast-food", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1512058560550-42749359a777?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "17",
+    "name": "Chole Bhature",
+    "description": "Spicy chickpea curry served with large, fluffy fried bread.",
+    "cuisine": "Indian",
+    "rating": 4.7,
+    "tags": ["spicy", "heavy", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1626132646529-5006375325b7?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "18",
+    "name": "Chicken Tikka",
+    "description": "Boneless chicken pieces marinated in spices and grilled to perfection.",
+    "cuisine": "Indian",
+    "rating": 4.6,
+    "tags": ["spicy", "grilled", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1599487488170-d11ec9c17360?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "19",
+    "name": "Caesar Salad",
+    "description": "Romaine lettuce, croutons, and parmesan cheese with Caesar dressing.",
+    "cuisine": "Continental",
+    "rating": 4.4,
+    "tags": ["healthy", "classic", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "20",
+    "name": "Mutton Biryani",
+    "description": "Slow-cooked mutton with fragrant rice and secret royal spices.",
+    "cuisine": "Indian",
+    "rating": 4.9,
+    "tags": ["heavy", "royal", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "21",
+    "name": "Fish and Chips",
+    "description": "Deep-fried battered fish served with potato chips and tartare sauce.",
+    "cuisine": "English",
+    "rating": 4.3,
+    "tags": ["classic", "fried", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1524339102455-6f49caec9bd1?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "22",
+    "name": "Mushroom Risotto",
+    "description": "Creamy Italian rice dish cooked with sautéed mushrooms and herbs.",
+    "cuisine": "Italian",
+    "rating": 4.5,
+    "tags": ["creamy", "healthy", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "23",
+    "name": "Beef Burger",
+    "description": "Thick beef patty with caramelized onions, lettuce, and special sauce.",
+    "cuisine": "American",
+    "rating": 4.6,
+    "tags": ["fast-food", "heavy", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "24",
+    "name": "Palak Paneer",
+    "description": "Succulent paneer cubes in a smooth, vibrant spinach and garlic gravy.",
+    "cuisine": "Indian",
+    "rating": 4.5,
+    "tags": ["healthy", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1601050690597-df056ec1d596?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "25",
+    "name": "Lamb Chops",
+    "description": "Tender lamb chops grilled with rosemary and garlic butter.",
+    "cuisine": "Continental",
+    "rating": 4.7,
+    "tags": ["grilled", "luxury", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1602491951786-896881f1b672?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "26",
+    "name": "Avocado Toast",
+    "description": "Toasted sourdough bread with mashed avocado, chili flakes, and egg.",
+    "cuisine": "Continental",
+    "rating": 4.4,
+    "tags": ["healthy", "breakfast", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "27",
+    "name": "Pav Bhaji",
+    "description": "Spicy mashed vegetable curry served with soft buttered bread rolls.",
+    "cuisine": "Indian",
+    "rating": 4.8,
+    "tags": ["street-food", "spicy", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "28",
+    "name": "Spring Rolls",
+    "description": "Crispy fried rolls filled with stir-fried vegetables and sprouts.",
+    "cuisine": "Chinese",
+    "rating": 4.2,
+    "tags": ["fast-food", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "29",
+    "name": "Chicken Tikka Masala",
+    "description": "Grilled chicken pieces in a spiced, orange-colored tomato gravy.",
+    "cuisine": "Indian",
+    "rating": 4.8,
+    "tags": ["creamy", "spicy", "non-veg"],
+    "type": "non-veg",
+    "image_url": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=400"
+  },
+  {
+    "id": "30",
+    "name": "Greek Salad with Paneer",
+    "description": "Modified Greek salad with paneer cubes instead of feta.",
+    "cuisine": "Fusion",
+    "rating": 4.3,
+    "tags": ["healthy", "fresh", "veg"],
+    "type": "veg",
+    "image_url": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=400"
+  }
+]
