@@ -1,192 +1,119 @@
-# Smart Food Recommendation App
+# AI Food Recommendation and Semantic Search App
 
-A web app that lets you search for food using natural language and get personalized recommendations. Built as part of a hands-on project to learn how vector databases work in real applications.
+This project is a food discovery and recommendation platform built using a vector database. It allows users to search for dishes using natural language rather than just keywords and provides personalized suggestions based on their search behavior. 
 
----
-
-## What it does
-
-You type something like "spicy street food" or "light healthy breakfast" and the app finds the closest matching dishes from its database — not just by keyword, but by meaning. It also explains why each result was recommended.
-
----
+This project was built as part of a placement assignment using Endee vector database.
 
 ## Problem Statement
 
-Most food apps use keyword filters and categories. If you type "something warm and filling", they return nothing useful. This project explores how semantic search can make that kind of query actually work, by converting text into vector embeddings and finding similar items in a vector database (Endee).
+Traditional food search systems depend on exact keyword matching. For example, if a user searches for "something spicy and heavy" on a platform that only uses basic keyword filters, they might not find relevant results unless those specific words appear in a dish's title.
 
----
+This application uses semantic search to understand the context and intent of a query. By converting text into vector embeddings, the system can find dishes that are conceptually similar to the user's request, even if the exact words do not match.
 
 ## Features
 
-- Semantic search powered by sentence-transformers and Endee vector database
-- Personalized food recommendations based on your search history
-- Each result includes an AI-generated explanation of why it matched
-- Handles vague queries like "something tasty" by falling back to trending results
-- 30 food items with images, ratings, cuisines, and tags
-- Clean React frontend with autocomplete suggestions and category filters
-
----
+- **Semantic Search**: Uses vector embeddings to find relevant dishes based on natural language queries.
+- **Recommendation System**: Suggests dishes by analyzing the user's recent search history and overall dish ratings.
+- **Dietary Filtering**: Includes logic to strictly filter results by Veg or Non-Veg types post-retrieval.
+- **Hybrid Ranking**: Combines semantic similarity with user ratings and tag matching to provide more accurate results.
+- **Automated Explanations**: Provides a simple reason for why each dish was matched or recommended.
+- **Frontend UI**: A clean interface for searching, filtering, and viewing results with autocomplete suggestions.
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Python, Flask |
-| Vector Database | Endee (self-hosted via Docker) |
-| Embeddings | sentence-transformers (`all-MiniLM-L6-v2`) |
-| Frontend | React + Vite |
-| Data | JSON (30 hand-curated food items) |
+- **Backend**: Python, Flask
+- **Vector Database**: Endee
+- **Frontend**: React, Vite
+- **Embeddings**: Sentence-transformers (`all-MiniLM-L6-v2`)
 
----
+## System Design
 
-## How Endee is Used
-
-Endee is an open-source vector database. Here is how it fits into this project:
-
-1. **Storing data** — When the backend starts, it converts each food item's name, description, and tags into a 384-dimensional vector and stores it in Endee along with the full metadata (name, image, rating, etc.).
-
-2. **Searching** — When a user submits a query, the app converts that query into a vector using the same model, then asks Endee to return the most similar food items.
-
-3. **Retrieving results** — Endee returns the closest matches with similarity scores. The backend then re-ranks them using tag matching, user history, and ratings before sending the final list to the frontend.
-
----
-
-## Architectural Flow
+The application follows a standard retrieval-augmented flow to serve search results and recommendations. 
 
 ```mermaid
 graph LR
     A[User Query] --> B[Flask API]
-    B --> C[Sentence Transformer]
+    B --> C[Embedding Model]
     C --> D[Endee Vector DB]
     D --> E[Semantic Results]
-    E --> F[Hybrid Re-ranker]
-    F --> G[Interactive UI]
+    E --> F[Filtering + Ranking]
+    F --> G[Frontend UI]
 ```
 
----
+### How Endee is Used
 
-## Project Structure
-
-```
-smart-food-app/
-├── backend/
-│   ├── app.py              # Flask API server
-│   ├── endee_client.py     # Endee HTTP client wrapper
-│   ├── reseed_db.py        # Script to populate Endee with food data
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx         # Main React component
-│   │   └── main.jsx
-│   └── package.json
-├── data/
-│   └── sample_data.json    # 30 food items with metadata
-└── README.md
-```
-
----
+Endee is used as the primary retrieval engine for the application:
+1. **Storing Data**: Food metadata (name, description, tags) is converted into 384-dimensional vectors and stored in an Endee collection.
+2. **Similarity Search**: User queries are converted into vectors in real-time and matched against the collection using vector similarity.
+3. **Recommendation Retrieval**: Search history is used to build a context vector, which is then used to retrieve relevant items from Endee for the recommendations section.
 
 ## How to Run
 
-### Step 1 — Start Endee (Vector Database)
+### Endee (Vector Database)
 
-Endee runs as a Docker container. Make sure Docker is installed and running, then:
+The easiest way to run the Endee server is via Docker:
 
 ```bash
 docker run -p 8080:8080 endeeio/endee-server:latest
 ```
 
-Wait a few seconds until you see the server start message. Endee should now be accessible at `http://localhost:8080`.
+Ensure the server is running at `http://localhost:8080` before starting the backend.
 
-### Step 2 — Set up and run the Backend
+### Backend
 
-Open a terminal and navigate to the backend folder:
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Set up the environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+4. Seed the database with initial food data:
+   ```bash
+   python reseed_db.py
+   ```
+5. Start the Flask server:
+   ```bash
+   python app.py
+   ```
 
-```bash
-cd smart-food-app/backend
-```
+### Frontend
 
-Create and activate a virtual environment:
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-Install the required packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-Seed the database with food data (run this once):
-
-```bash
-python reseed_db.py
-```
-
-You should see: `Data successfully stored in Endee`
-
-Start the Flask server:
-
-```bash
-python app.py
-```
-
-The backend will be running at `http://localhost:5000`.
-
-### Step 3 — Run the Frontend
-
-Open a new terminal and navigate to the frontend folder:
-
-```bash
-cd smart-food-app/frontend
-```
-
-Install Node dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-The app will open at `http://localhost:5173`.
-
----
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install the node packages:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
 ## Example Usage
 
-- Search **"spicy food"** → returns Hyderabadi Biryani, Misal Pav, Szechuan Noodles, etc.
-- Search **"healthy breakfast"** → returns Masala Dosa, Avocado Toast, Quinoa Salad, etc.
-- Search **"street food"** → returns Pav Bhaji, Chicken Shawarma, Falafel Wrap, etc.
-- Search **"something sweet"** → falls back to trending, returns top-rated desserts
+- Searching for **"spicy food"** will return results like Indian curries and Szechuan dishes.
+- Searching for **"healthy breakfast"** will suggest salads, smoothies, and light toasts even if the word "healthy" isn't in their name.
+- Selecting the **"Veg"** filter will ensure only vegetarian items are displayed, even if a non-veg item is a close semantic match.
 
-Each result shows the dish name, image, rating, location, and a short explanation of why it matched your query.
+## Screenshots
 
----
+*(Add screenshots here showing the search page, recommendations, and results)*
 
 ## Future Improvements
 
-- Add user login so recommendations can be personalized per user over time
-- Let users add their own food items through the UI
-- Use a larger, more diverse dataset
-- Add filters for price range and dietary restrictions
-- Improve the recommendation model with collaborative filtering
+- **User Authentication**: Implementing user accounts to persist search history across sessions.
+- **Dynamic Data Entry**: Allowing users or restaurant owners to add new food items directly through the UI.
+- **Enhanced Recommendation Model**: Incorporating collaborative filtering for more sophisticated personalization.
+- **Larger Dataset**: Expanding the database to include a wider variety of global cuisines and nutritional data.
 
 ---
 
-## Notes
-
-- Make sure Endee is running before you start the backend, otherwise the app will print a warning and search will not work.
-- The `reseed_db.py` script clears and repopulates the Endee collection every time it runs. Only run it once, or when you want to reset the data.
-- The embedding model (`all-MiniLM-L6-v2`) is downloaded automatically on first run. This may take a minute.
+This project was built as part of a placement assignment using Endee vector database.
