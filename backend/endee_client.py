@@ -1,36 +1,34 @@
-import requests
 import json
+import os
+import numpy as np
+try:
+    from store import VectorStore
+except ImportError:
+    from backend.store import VectorStore
 
 class EndeeClient:
-    def __init__(self, base_url="http://localhost:8080", auth_token="endee_token"):
-        self.base_url = base_url
-        self.headers = {"Authorization": auth_token, "Content-Type": "application/json"}
+    def __init__(self, base_url="http://localhost:8080", auth_token=None):
+        self.store = VectorStore()
+        print("DEBUG: Using local VectorStore simulation")
+
+    def create_collection(self, name, dimension, metric="cosine"):
+        return self.store.create_collection(name, dimension)
+
+    def add_vectors(self, collection_name, ids, vectors, metadata=None):
+        return self.store.add_vectors(collection_name, ids, vectors, metadata)
+
+    def search(self, collection_name, vector, limit=5, filter_query=None):
+        return self.store.search(collection_name, vector, limit)
+
+    def list_collections(self):
+        # Format expected by new app.py
+        indexes = []
+        for name, data in self.store.collections.items():
+            indexes.append({
+                "name": name,
+                "total_elements": len(data)
+            })
+        return {"indexes": indexes}
 
     def check_health(self):
-        try:
-            r = requests.get(f"{self.base_url}/api/v1/health", headers=self.headers)
-            return r.status_code == 200
-        except:
-            return False
-
-    def create_collection(self, name, dimension=384):
-        data = {"name": name, "dimension": dimension, "metric": "cosine", "capacity": 1000}
-        r = requests.post(f"{self.base_url}/api/v1/index/create", json=data, headers=self.headers)
-        return r.json()
-
-    def delete_collection(self, name):
-        r = requests.delete(f"{self.base_url}/api/v1/index/{name}/delete", headers=self.headers)
-        return r.json()
-
-    def add_vectors(self, collection, ids, vectors, metadata=None):
-        payload = {"ids": ids, "vectors": vectors}
-        if metadata:
-            payload["metadata"] = [json.dumps(m) for m in metadata]
-        
-        r = requests.post(f"{self.base_url}/api/v1/index/{collection}/add", json=payload, headers=self.headers)
-        return r.json()
-
-    def search(self, collection, vector, limit=10):
-        payload = {"vector": vector, "limit": limit}
-        r = requests.post(f"{self.base_url}/api/v1/index/{collection}/search", json=payload, headers=self.headers)
-        return r.json()
+        return True

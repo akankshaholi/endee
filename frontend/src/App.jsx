@@ -1,95 +1,280 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE = "http://localhost:5000";
+
 const App = () => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [results, setResults] = useState([]);
-  const [recommendations, setRecommendations] = useState([]);
-  const [filter, setFilter] = useState(''); // 'veg', 'non-veg', or ''
-
-  const fetchRecommendations = async () => {
-    try {
-      const resp = await axios.get(`http://localhost:5000/recommend${filter ? `?type=${filter}` : ''}`);
-      setRecommendations(resp.data.items || []);
-    } catch (err) {
-      console.error("Failed to fetch recommendations", err);
-    }
-  };
-
-  const handleSearch = async (e, forcedQuery) => {
-    if (e) e.preventDefault();
-    const q = forcedQuery || query;
-    if (!q) return;
-
-    try {
-      const resp = await axios.get(`http://localhost:5000/search?q=${q}${filter ? `?type=${filter}` : ''}`);
-      setResults(resp.data.results || []);
-      fetchRecommendations(); // Update recommendations as history changes
-    } catch (err) {
-      console.error("Search failed", err);
-    }
-  };
+  const [recommendation, setRecommendation] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     fetchRecommendations();
-    // Refresh search if filter changes while query exists
-    if (query) handleSearch(null, query);
   }, [filter]);
 
+  // Debounced search for suggestions
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (query.length > 1) {
+        fetchSuggestions();
+      } else {
+        setSuggestions([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
+
+  const fetchRecommendations = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/recommend?city=Mumbai`);
+      setRecommendation(res.data);
+      if (!query) setResults(res.data.items);
+    } catch (err) {
+      console.error("Backend unreachable.");
+    }
+  };
+
+  const fetchSuggestions = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/suggestions?q=${query}`);
+      setSuggestions(res.data.suggestions);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSearch = async (e, forcedQuery = null) => {
+    if (e) e.preventDefault();
+    const finalQuery = forcedQuery !== null ? forcedQuery : query;
+    if (!finalQuery && !filter) return;
+    
+    setLoading(true);
+    setShowSuggestions(false);
+    try {
+      const res = await axios.get(`${API_BASE}/search?q=${finalQuery || 'food'}&type=${filter}`);
+      setResults(res.data.results);
+      fetchRecommendations();
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
+
+  const highlightMatch = (text, term) => {
+    if (!term) return text;
+    const parts = text.split(new RegExp(`(${term})`, 'gi'));
+    return parts.map((part, i) => 
+      part.toLowerCase() === term.toLowerCase() ? <strong key={i}>{part}</strong> : part
+    );
+  };
+
+  // Quick categories for trending section
+  const trendingItems = [
+    { name: "Best Biryani", img: "https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=300", query: "spicy biryani" },
+    { name: "Healthy Bowls", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300", query: "healthy salad quinoa" },
+    { name: "Coffee Breaks", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300", query: "breakfast coffee" },
+    { name: "Street Food", img: "https://images.unsplash.com/photo-1567337710282-00832b415979?w=300", query: "street food chat pav" },
+    { name: "Desserts", img: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=300", query: "sweet dessert chocolate" },
+  ];
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial', maxWidth: '1000px', margin: 'auto' }}>
-      <h1>🍽️ Smart Food Search</h1>
-      
-      {/* Search Input */}
-      <div style={{ marginBottom: '20px' }}>
-        <form onSubmit={handleSearch}>
-          <input 
-            type="text" 
-            value={query} 
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for 'spicy street food' or 'something healthy'..."
-            style={{ width: '70%', padding: '10px', fontSize: '16px', borderRadius: '5px', border: '1px solid #ccc' }}
-          />
-          <button type="submit" style={{ padding: '10px 20px', marginLeft: '10px', cursor: 'pointer' }}>Search</button>
-        </form>
-      </div>
+    <div className="app">
+      <nav className="navbar">
+        <div className="container nav-content">
+          <div className="logo" onClick={() => window.location.reload()}>SmartFood.ai</div>
+          <div className="nav-links" style={{display: 'flex', gap: '25px', fontWeight: '500'}}>
+             <span>Discover</span>
+             <span>Restaurants</span>
+             <span style={{color: 'var(--primary)'}}>Sign In</span>
+          </div>
+        </div>
+      </nav>
 
-      {/* Filters */}
-      <div style={{ marginBottom: '20px' }}>
-        <button onClick={() => setFilter('')} style={{ fontWeight: filter === '' ? 'bold' : 'normal', marginRight: '10px' }}>All</button>
-        <button onClick={() => setFilter('veg')} style={{ fontWeight: filter === 'veg' ? 'bold' : 'normal', marginRight: '10px' }}>Veg Only</button>
-        <button onClick={() => setFilter('non-veg')} style={{ fontWeight: filter === 'non-veg' ? 'bold' : 'normal' }}>Non-Veg Only</button>
-      </div>
+      <section className="hero">
+        <div className="container">
+          <h1>Find the perfect meal <br/><span style={{color: 'var(--primary)'}}>with AI precision.</span></h1>
+          <p>Powered by Endee Vector DB for semantic flavor search.</p>
+          
+          <div className="search-wrapper">
+            <form onSubmit={handleSearch}>
+              <input 
+                type="text" 
+                className="search-bar" 
+                placeholder="Try 'something spicy with rice' or 'light healthy breakfast'..."
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+              />
+            </form>
+            
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="suggestions-dropdown">
+                {suggestions.map((s, i) => (
+                  <div 
+                    key={i} 
+                    className="suggestion-item"
+                    onClick={() => {
+                      setQuery(s);
+                      handleSearch(null, s);
+                    }}
+                  >
+                    <span>🔍</span> {highlightMatch(s, query)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
 
-      <div style={{ display: 'flex', gap: '30px' }}>
-        {/* Main Results */}
-        <div style={{ flex: 2 }}>
-          <h2>Search Results</h2>
-          {results.length === 0 && <p>Type something above to start searching!</p>}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
-            {results.map(item => (
-              <div key={item.id} style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '8px' }}>
-                <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '4px' }} />
-                <h3>{item.name}</h3>
-                <p style={{ fontSize: '12px', color: '#666' }}>{item.description}</p>
-                <div style={{ fontSize: '11px', background: '#f0f0f0', padding: '5px', marginTop: '10px', borderRadius: '4px' }}>
-                  <strong>AI Match:</strong> {item.explanation}
-                </div>
+      <main className="container">
+        {recommendation && (
+          <div className="notification-banner" style={{
+            background: 'linear-gradient(90deg, #fff0f3, #ffe5e9)',
+            border: '1px solid var(--primary)',
+            color: 'var(--primary-dark)',
+            padding: '15px 20px',
+            borderRadius: '15px',
+            marginBottom: '30px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
+            <span style={{fontSize: '1.2rem'}}>✨</span> <strong>AI Insight:</strong> {recommendation.message}
+          </div>
+        )}
+
+        <div className="section-header">
+          <h2>Trending Flavors</h2>
+        </div>
+        <div className="trending-container">
+          {trendingItems.map((cat, i) => (
+            <div key={i} className="trending-card" onClick={() => {setQuery(cat.query); handleSearch();}}>
+              <img src={cat.img} alt={cat.name} />
+              <div className="overlay">
+                <h4>{cat.name}</h4>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="section-header">
+          <h2>Semantic Results</h2>
+          <div className="filters-bar" style={{margin: 0}}>
+            {["", "veg", "non-veg"].map((t) => (
+              <div 
+                key={t}
+                className={`filter-chip ${filter === t ? 'active' : ''}`}
+                onClick={() => setFilter(t)}
+              >
+                {t === "" ? "All" : t === "veg" ? "Vegetarian" : "Non-Veg"}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Sidebar Recommendations */}
-        <div style={{ flex: 1, borderLeft: '1px solid #eee', paddingLeft: '20px' }}>
-          <h2>Recommended For You</h2>
-          {recommendations.map(item => (
-            <div key={item.id} style={{ marginBottom: '15px' }}>
-              <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
-              <h4 style={{ margin: '5px 0' }}>{item.name}</h4>
-              <span style={{ fontSize: '11px', color: '#999' }}>{item.cuisine} • ⭐{item.rating}</span>
-            </div>
-          ))}
+        {loading ? (
+          <div className="loader-container">
+            <div className="spinner"></div>
+            <p style={{marginTop: '15px', color: 'var(--text-muted)'}}>Consulting the flavor vectors...</p>
+          </div>
+        ) : (
+          <>
+            {results.length > 0 ? (
+              <div className="food-grid">
+                {results.map((item, idx) => (
+                  <FoodCard key={item.id} item={item} score={item.match_score} index={idx} />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-2130356-1800917.png" alt="Empty" />
+                <h3>Oops! We couldn't find that specific flavor.</h3>
+                <p>Try broad terms like 'spicy', 'healthy', or 'street food'.</p>
+              </div>
+            )}
+          </>
+        )}
+      </main>
+      
+      <footer style={{padding: '60px 0', textAlign: 'center', borderTop: '1px solid #eee', marginTop: '40px', color: 'var(--text-muted)'}}>
+        <p>© 2026 SmartFood.ai • Powered by Endee Vector Database</p>
+      </footer>
+    </div>
+  );
+};
+
+const FoodCard = ({ item, score, index }) => {
+  // Use backend image directly with a smart fallback
+  const foodImage = item.image_url || `https://source.unsplash.com/400x300/?${encodeURIComponent(item.name)}`;
+
+  return (
+    <div className="food-card" style={{animationDelay: `${index * 0.1}s`}}>
+      <div className="food-img-wrapper">
+        <img src={foodImage} alt={item.name} className="food-img" onError={(e) => {
+          e.target.src = `https://source.unsplash.com/400x300/?food,${encodeURIComponent(item.name)}`;
+        }} />
+        <div style={{
+          position: 'absolute', 
+          top: '15px', 
+          right: '15px', 
+          background: 'rgba(255,255,255,0.9)', 
+          padding: '5px 10px', 
+          borderRadius: '10px',
+          fontSize: '0.8rem',
+          fontWeight: '700',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+        }}>
+          {score ? `${(score*100).toFixed(0)}% Match` : item.cuisine}
+        </div>
+      </div>
+      <div className="food-info">
+        <div className="food-header">
+          <span className="food-name">{item.name}</span>
+          <span className="badge-rating">★ {item.rating}</span>
+        </div>
+        <p style={{color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5', height: '45px', overflow: 'hidden'}}>
+          {item.description}
+        </p>
+        
+        {/* RAG Explanation Section */}
+        {score && (
+          <div style={{
+            background: '#fdf0f2',
+            padding: '10px',
+            borderRadius: '10px',
+            marginTop: '15px',
+            fontSize: '0.85rem',
+            borderLeft: '3px solid var(--primary)',
+            color: '#444',
+            fontStyle: 'italic'
+          }}>
+            "{(item.explanation || `Matches your search for "${item.name}" with a ${(score*100).toFixed(0)}% semantic score.`)}"
+          </div>
+        )}
+
+        <div style={{marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <span style={{fontSize: '0.85rem', fontWeight: '600', color: '#888'}}>
+             📍 {item.location}
+          </span>
+          <button style={{
+            background: 'var(--primary)',
+            color: 'white',
+            border: 'none',
+            padding: '8px 18px',
+            borderRadius: '25px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'background 0.3s'
+          }}>Order Now</button>
         </div>
       </div>
     </div>

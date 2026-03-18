@@ -1,24 +1,38 @@
-
-# Ignore build directory
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+dist/
 build/
-# Ignore build like directory
-build*/
-# Ignore all files in the build directory
-build/*
 
-# Ignore tests build directory
-tests/build/
-tests/build*/
+# Node / Frontend
+node_modules/
+.pnp
+.pnp.js
+dist/
+.next/
+out/
 
-# Test binaries
-tests/**/ndd_filter_test
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
 
-# macOS debug symbols
-*.dSYM/
-
-# VS Code directory
-.vscode/
-.vscode/*
-
-# DS Store
+# OS files
 .DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Secrets
+*.env.local
+*.env.production
