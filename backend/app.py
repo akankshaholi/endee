@@ -261,9 +261,9 @@ def recommend():
         final_items.append(flat_item)
 
     return jsonify({
-        "message": msg,
+        "message": f"Personalized recommendations for you in {city}",
         "items": final_items,
-        "popular_near_you": recommendations[0] if recommendations else "Biryani"
+        "popular_near_you": final_items[0]['name'] if final_items else "Trending Dishes"
     })
 
 @app.route('/history', methods=['GET'])
