@@ -1,139 +1,124 @@
-<p align="center">
-  <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset="docs/assets/logo-light.svg">
-      <img height="100" alt="Endee" src="docs/assets/logo-dark.svg">
-  </picture>
-</p>
+# AI Food Recommendation and Semantic Search App
 
-<p align="center">
-    <b>High-performance open-source vector database for AI search, RAG, semantic search, and hybrid retrieval.</b>
-</p>
+This project is a food discovery and recommendation platform built using a vector database. It allows users to search for dishes using natural language rather than just keywords and provides personalized suggestions based on their search behavior. 
 
-<p align="center">
-    <a href="./docs/getting-started.md"><img src="https://img.shields.io/badge/Quick_Start-Local_Setup-success?style=flat-square" alt="Quick Start"></a>
-    <a href="https://docs.endee.io/quick-start"><img src="https://img.shields.io/badge/Docs-Quick_Start-success?style=flat-square" alt="Docs"></a>
-    <a href="https://github.com/endee-io/endee/blob/master/LICENSE"><img src="https://img.shields.io/github/license/endee-io/endee?style=flat-square" alt="License"></a>
-    <a href="https://discord.gg/5HFGqDZQE3"><img src="https://img.shields.io/badge/Discord-Join_Chat-5865F2?logo=discord&style=flat-square" alt="Discord"></a>
-    <a href="https://endee.io/"><img src="https://img.shields.io/badge/Website-Endee-111111?style=flat-square" alt="Website"></a>
-    <!-- <a href="https://endee.io/benchmarks"><img src="https://img.shields.io/badge/Benchmarks-Coming_Soon-1F8B4C?style=flat-square" alt="Benchmarks"></a> -->
-    <!-- <a href="https://endee.io/cloud"><img src="https://img.shields.io/badge/Cloud-Coming_Soon-2496ED?style=flat-square" alt="Cloud"></a> -->
-</p>
+This project was built as part of a placement assignment using Endee vector database.
 
-<p align="center">
-<strong><a href="./docs/getting-started.md">Quick Start</a> • <a href="#why-endee">Why Endee</a> • <a href="#use-cases">Use Cases</a> • <a href="#features">Features</a> • <a href="#api-and-clients">API and Clients</a> • <a href="#docs-and-links">Docs</a> • <a href="#community-and-contact">Contact</a></strong>
-</p>
+## Problem Statement
 
-# Endee: Open-Source Vector Database for AI Search
+Traditional food search systems depend on exact keyword matching. For example, if a user searches for "something spicy and heavy" on a platform that only uses basic keyword filters, they might not find relevant results unless those specific words appear in a dish's title.
 
-**Endee** is a high-performance open-source vector database built for AI search and retrieval workloads. It is designed for teams building **RAG pipelines**, **semantic search**, **hybrid search**, recommendation systems, and filtered vector retrieval APIs that need production-oriented performance and control.
-
-Endee combines vector search with filtering, sparse retrieval support, backup workflows, and deployment flexibility across local builds and Docker-based environments. The project is implemented in C++ and optimized for modern CPU targets, including AVX2, AVX512, NEON, and SVE2.
-
-If you want the fastest path to evaluate Endee locally, start with the [Getting Started guide](./docs/getting-started.md) or the hosted docs at [docs.endee.io](https://docs.endee.io/quick-start).
-
-## Why Endee
-
-- Built as a dedicated vector database for AI applications, search systems, and retrieval-heavy workloads.
-- Supports dense vector retrieval plus sparse search capabilities for hybrid search use cases.
-- Includes payload filtering for metadata-aware retrieval and application-specific query logic.
-- Ships with operational features already documented in this repo, including backup flows and runtime observability.
-- Offers flexible deployment paths: local scripts, manual builds, Docker images, and prebuilt registry images.
-
-## Getting Started
-
-The full installation, build, Docker, runtime, and authentication instructions are in [docs/getting-started.md](./docs/getting-started.md).
-
-Fastest local path:
-
-```bash
-chmod +x ./install.sh ./run.sh
-./install.sh --release --avx2
-./run.sh
-```
-
-The server listens on port `8080`. For detailed setup paths, supported operating systems, CPU optimization flags, Docker usage, and authentication examples, use:
-
-- [Getting Started](./docs/getting-started.md)
-- [Hosted Quick Start Docs](https://docs.endee.io/quick-start)
-
-## Use Cases
-
-### RAG and AI Retrieval
-
-Use Endee as the retrieval layer for question answering, chat assistants, copilots, and other RAG applications that need fast vector search with metadata-aware filtering.
-
-### Agentic AI and AI Agent Memory
-
-Use Endee as the long-term memory and context retrieval layer for AI agents built with frameworks like LangChain, CrewAI, AutoGen, and LlamaIndex. Store and retrieve past observations, tool outputs, conversation history, and domain knowledge mid-execution with low-latency filtered vector search, so your autonomous agents get the right context without stalling their reasoning loop.
-
-### Semantic Search
-
-Build semantic search experiences for documents, products, support content, and knowledge bases using vector similarity search instead of exact keyword-only matching.
-
-### Hybrid Search
-
-Combine dense retrieval, sparse vectors, and filtering to improve relevance for search workflows where both semantic understanding and term-level precision matter.
-
-### Recommendations and Matching
-
-Support recommendation, similarity matching, and nearest-neighbor retrieval workflows across text, embeddings, and other high-dimensional representations.
+This application uses semantic search to understand the context and intent of a query. By converting text into vector embeddings, the system can find dishes that are conceptually similar to the user's request, even if the exact words do not match.
 
 ## Features
 
-- **Vector search** for AI retrieval and semantic similarity workloads.
-- **Hybrid retrieval support** with sparse vector capabilities documented in [docs/sparse.md](./docs/sparse.md).
-- **Payload filtering** for structured retrieval logic documented in [docs/filter.md](./docs/filter.md).
-- **Backup APIs and flows** documented in [docs/backup-system.md](./docs/backup-system.md).
-- **Operational logging and instrumentation** documented in [docs/logs.md](./docs/logs.md) and [docs/mdbx-instrumentation.md](./docs/mdbx-instrumentation.md).
-- **CPU-targeted builds** for AVX2, AVX512, NEON, and SVE2 deployments.
-- **Docker deployment options** for local and server environments.
+- **Semantic Search**: Uses vector embeddings to find relevant dishes based on natural language queries.
+- **Recommendation System**: Suggests dishes by analyzing the user's recent search history and overall dish ratings.
+- **Dietary Filtering**: Includes logic to strictly filter results by Veg or Non-Veg types post-retrieval.
+- **Hybrid Ranking**: Combines semantic similarity with user ratings and tag matching to provide more accurate results.
+- **Automated Explanations**: Provides a simple reason for why each dish was matched or recommended.
+- **Frontend UI**: A clean interface for searching, filtering, and viewing results with autocomplete suggestions.
 
-## API and Clients
+## Tech Stack
 
-Endee exposes an HTTP API for managing indexes and serving retrieval workloads. The current repo documentation and examples focus on running the server directly and calling its API endpoints.
+- **Backend**: Python, Flask
+- **Vector Database**: Endee
+- **Frontend**: React, Vite
+- **Embeddings**: Sentence-transformers (`all-MiniLM-L6-v2`)
 
-Current developer entry points:
+## System Design
 
-- [Getting Started](./docs/getting-started.md) for local build and run flows
-- [Hosted Docs](https://docs.endee.io/quick-start) for product documentation
-- [Release Notes 1.0.0](https://github.com/endee-io/endee/releases/tag/1.0.0) for recent platform changes
+The application follows a standard retrieval-augmented flow to serve search results and recommendations. 
 
-## Docs and Links
+```mermaid
+graph LR
+    A[User Query] --> B[Flask API]
+    B --> C[Embedding Model]
+    C --> D[Endee Vector DB]
+    D --> E[Semantic Results]
+    E --> F[Filtering + Ranking]
+    F --> G[Frontend UI]
+```
 
-- [Getting Started](./docs/getting-started.md)
-- [Hosted Documentation](https://docs.endee.io/quick-start)
-- [Release Notes](https://github.com/endee-io/endee/releases/tag/1.0.0)
-- [Sparse Search](./docs/sparse.md)
-- [Filtering](./docs/filter.md)
-- [Backups](./docs/backup-system.md)
+### How Endee is Used
 
-## Community and Contact
+Endee is used as the primary retrieval engine for the application:
+1. **Storing Data**: Food metadata (name, description, tags) is converted into 384-dimensional vectors and stored in an Endee collection.
+2. **Similarity Search**: User queries are converted into vectors in real-time and matched against the collection using vector similarity.
+3. **Recommendation Retrieval**: Search history is used to build a context vector, which is then used to retrieve relevant items from Endee for the recommendations section.
 
-- Join the community on [Discord](https://discord.gg/5HFGqDZQE3)
-- Visit the website at [endee.io](https://endee.io/)
-- For trademark or branding permissions, contact [enterprise@endee.io](mailto:enterprise@endee.io)
+## How to Run
 
-## Contributing
+### Endee (Vector Database)
 
-We welcome contributions from the community to help make vector search faster and more accessible for everyone.
+The easiest way to run the Endee server is via Docker:
 
-- Submit pull requests for fixes, features, and improvements
-- Report bugs or performance issues through GitHub issues
-- Propose enhancements for search quality, performance, and deployment workflows
+```bash
+docker run -p 8080:8080 endeeio/endee-server:latest
+```
 
-## License
+Ensure the server is running at `http://localhost:8080` before starting the backend.
 
-Endee is open source software licensed under the **Apache License 2.0**. See the [LICENSE](./LICENSE) file for full terms.
+### Backend
 
-## Trademark and Branding
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Set up the environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+4. Seed the database with initial food data:
+   ```bash
+   python reseed_db.py
+   ```
+5. Start the Flask server:
+   ```bash
+   python app.py
+   ```
 
-“Endee” and the Endee logo are trademarks of Endee Labs.
+### Frontend
 
-The Apache License 2.0 does not grant permission to use the Endee name, logos, or branding in a way that suggests endorsement or affiliation.
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install the node packages:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-If you offer a hosted or managed service based on this software, you must use your own branding and avoid implying it is an official Endee service.
+## Example Usage
 
-## Third-Party Software
+- Searching for **"spicy food"** will return results like Indian curries and Szechuan dishes.
+- Searching for **"healthy breakfast"** will suggest salads, smoothies, and light toasts even if the word "healthy" isn't in their name.
+- Selecting the **"Veg"** filter will ensure only vegetarian items are displayed, even if a non-veg item is a close semantic match.
 
-This project includes or depends on third-party software components licensed under their respective open-source licenses. Use of those components is governed by their own license terms.
+## Screenshots
+
+Below are some sample outputs from the application:
+
+![Home Page](screenshots/home.png)
+![Search Results](screenshots/search.png)
+![Recommendations](screenshots/recommend.png)
+![Veg Filter](screenshots/filter.png)
+
+## Future Improvements
+
+- **User Authentication**: Implementing user accounts to persist search history across sessions.
+- **Dynamic Data Entry**: Allowing users or restaurant owners to add new food items directly through the UI.
+- **Enhanced Recommendation Model**: Incorporating collaborative filtering for more sophisticated personalization.
+- **Larger Dataset**: Expanding the database to include a wider variety of global cuisines and nutritional data.
+
+---
+
+This project was built as part of a placement assignment using Endee vector database.
