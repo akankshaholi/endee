@@ -82,6 +82,11 @@ Ensure the server is running at `http://localhost:8080` before starting the back
    python app.py
    ```
 
+### API Documentation (Swagger)
+
+Once the backend is running, you can access the interactive API documentation (Swagger UI) at:
+[http://localhost:5000/apidocs](http://localhost:5000/apidocs)
+
 ### Frontend
 
 1. Navigate to the frontend directory:

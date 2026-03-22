@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flasgger import Swagger
 from sentence_transformers import SentenceTransformer
 import json
 import os
@@ -9,6 +10,7 @@ from endee_client import EndeeClient
 
 app = Flask(__name__)
 CORS(app)
+swagger = Swagger(app)
 
 # --- Endee Integration Configuration ---
 ENDEE_URL = os.getenv("ENDEE_URL", "http://localhost:8080")
@@ -30,6 +32,13 @@ search_history = []
 
 @app.route('/')
 def home():
+    """
+    Backend Home Route
+    ---
+    responses:
+      200:
+        description: Returns the status of the backend API
+    """
     return jsonify({
         "status": "online",
         "message": "Smart Food App Backend is running",
@@ -112,7 +121,29 @@ def add_data():
 
 @app.route('/search', methods=['GET'])
 def search():
-    """ Enhanced Semantic Search with Tag Boosting and Personalization. """
+    """
+    Semantic Food Search
+    ---
+    parameters:
+      - name: q
+        in: query
+        type: string
+        required: true
+        description: The search query (e.g., 'spicy pizza')
+      - name: limit
+        in: query
+        type: integer
+        default: 10
+        description: Number of results to return
+      - name: type
+        in: query
+        type: string
+        enum: ['veg', 'non-veg']
+        description: Filter by food type
+    responses:
+      200:
+        description: A list of matching food items
+    """
     query = request.args.get('q', '')
     limit = int(request.args.get('limit', 10))
     food_type = request.args.get('type')
@@ -230,7 +261,19 @@ def search():
 
 @app.route('/recommend', methods=['GET'])
 def recommend():
-    """ Enhanced Personalized Recommendations. """
+    """
+    Personalized Recommendations
+    ---
+    parameters:
+      - name: city
+        in: query
+        type: string
+        default: 'Mumbai'
+        description: The city for local recommendations
+    responses:
+      200:
+        description: A list of recommended food items based on search history
+    """
     city = request.args.get('city', 'Mumbai')
     
     context_text = " ".join(search_history) if search_history else "best popular dishes"
